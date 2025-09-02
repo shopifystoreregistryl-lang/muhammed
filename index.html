@@ -4,19 +4,35 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Shopify Compliance & Growth — Advisor Dashboard</title>
+
+<!-- Tailwind (utility helpers) + Font Awesome -->
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
 <style>
 :root{
-  --green:#008060; --teal:#004c3f; --muted:#6b7280; --border:#e6e7ea; --bg:#f8fafb;
+  --green:#008060;
+  --teal:#004c3f;
+  --muted:#6b7280;
+  --border:#e6e7ea;
+  --bg:#f4f6f8;       /* SHOPIFY PARTNERS-like background (Polaris grey) */
+  --telegram:#0088cc; /* Telegram blue */
 }
+
+/* Base */
 body{background:var(--bg);color:#0f172a}
 .focus-ring:focus{outline:none;box-shadow:0 0 0 4px rgba(0,128,96,.12)}
+
+/* Steps */
 .step-dot{width:36px;height:36px;border-radius:9999px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff}
 .step-dot.active{background:var(--green);color:white;border-color:var(--green)}
 .step-line{height:2px;background:var(--border);flex:1}
 .step-line.active{background:var(--green)}
+
+/* Card */
 .card{background:white;border:1px solid var(--border);border-radius:12px}
+
+/* Animations */
 .animate-fade-in { animation: fadeIn .18s ease-out; }
 @keyframes fadeIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 .hidden { display: none !important; }
@@ -29,6 +45,8 @@ body{background:var(--bg);color:#0f172a}
   .steps-scroll { overflow-x:auto; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
   .steps-scroll::-webkit-scrollbar { display:none; }
 }
+
+/* Ticker */
 .ticker-wrapper {
   overflow:hidden;
   white-space:nowrap;
@@ -43,14 +61,11 @@ body{background:var(--bg);color:#0f172a}
   font-weight:600;
   color:#008060;
 }
-@keyframes ticker {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
-}
+@keyframes ticker { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } }
+
 </style>
 </head>
 <body class="font-sans antialiased">
-
 <!-- Loading -->
 <section id="loading" class="min-h-screen flex items-center justify-center">
   <div class="max-w-xl w-full p-6 text-center">
@@ -81,6 +96,7 @@ body{background:var(--bg);color:#0f172a}
   </header>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- LEFT column: aside goes in Part 3 -->
     <!-- Left Column -->
     <aside class="card p-6 space-y-6">
       <div class="flex items-center gap-4">
@@ -90,15 +106,21 @@ body{background:var(--bg);color:#0f172a}
           <div class="text-sm text-[var(--muted)]">Shopify Compliance & Growth Specialist</div>
         </div>
       </div>
+
       <p class="text-sm text-[var(--muted)] mt-4">I help you resolve compliance issues and grow your Shopify store through marketing, SEO, and performance optimization. Share your case to proceed.</p>
 
       <div class="grid gap-3">
+        <!-- WhatsApp opens the modal with method=whatsapp -->
         <button id="waOpenBtn" class="w-full inline-flex items-center justify-center gap-3 bg-[var(--green)] text-white py-2.5 rounded-md focus-ring">
           <i class="fa-brands fa-whatsapp"></i><span>Contact via WhatsApp</span>
         </button>
-        <button onclick="openForm('telegram')" class="w-full inline-flex items-center justify-center gap-3 bg-[var(--teal)] text-white py-2.5 rounded-md focus-ring">
+
+        <!-- Telegram button uses the Telegram blue variable -->
+        <button onclick="openForm('telegram')" class="w-full inline-flex items-center justify-center gap-3 bg-[var(--telegram)] text-white py-2.5 rounded-md focus-ring">
           <i class="fa-brands fa-telegram"></i><span>Contact via Telegram</span>
         </button>
+
+        <!-- Email -->
         <button onclick="openForm('email')" class="w-full inline-flex items-center justify-center gap-3 bg-gray-800 text-white py-2.5 rounded-md focus-ring">
           <i class="fa-solid fa-envelope"></i><span>Contact via Email</span>
         </button>
@@ -109,7 +131,6 @@ body{background:var(--bg);color:#0f172a}
         <div class="text-sm text-[var(--muted)]">Expert • 5+ years • 50+ stores helped • Rating 4.9/5</div>
       </div>
     </aside>
-
     <!-- Right Column -->
     <section class="lg:col-span-2 space-y-6">
       <!-- Services Section -->
@@ -161,7 +182,7 @@ body{background:var(--bg);color:#0f172a}
         </div>
       </div>
 
-      <!-- Case Progress Section (start) -->
+      <!-- Case Progress Section -->
       <div class="card p-6 space-y-4">
         <div class="flex items-center justify-between mb-3">
           <h3 class="font-semibold">Case Progress</h3>
@@ -198,9 +219,8 @@ body{background:var(--bg);color:#0f172a}
         </div>
       </div>
     </section>
-  </div>
+  </div> <!-- END grid -->
 </main>
-
 <!-- Modal Contact Form -->
 <div id="modal" class="fixed inset-0 hidden items-center justify-center z-50 px-4">
   <div class="bg-white w-full max-w-2xl rounded-lg p-6 card animate-fade-in">
@@ -256,7 +276,7 @@ body{background:var(--bg);color:#0f172a}
   </div>
 </div>
 
-<!-- Floating WhatsApp Widget -->
+<!-- Floating WhatsApp/Telegram/Email Widget -->
 <div id="whatsappPopup" class="fixed bottom-20 right-6 w-80 hidden z-50">
   <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden animate-fade-in">
     <div class="bg-[var(--green)] text-white px-4 py-3 flex items-center gap-3">
@@ -272,8 +292,8 @@ body{background:var(--bg);color:#0f172a}
     </div>
     <div class="px-4 pb-4">
       <a href="https://wa.me/2349135251130" target="_blank" class="w-full block bg-[var(--green)] text-white py-2.5 rounded-lg text-center mb-2"><i class="fa-brands fa-whatsapp"></i> Start Chat</a>
-      <a href="https://t.me/yourtelegramusername" target="_blank" class="w-full block bg-[var(--teal)] text-white py-2.5 rounded-lg text-center mb-2"><i class="fa-brands fa-telegram"></i> Message (Telegram)</a>
-      <a href="mailto:your-email@gmail.com" class="w-full block bg-gray-800 text-white py-2.5 rounded-lg text-center"><i class="fa-solid fa-envelope"></i> Send Email</a>
+      <a href="https://t.me/JuanShopifyadvisor" target="_blank" class="w-full block bg-[var(--telegram)] text-white py-2.5 rounded-lg text-center mb-2"><i class="fa-brands fa-telegram"></i> Message (Telegram)</a>
+      <a href="mailto:juan.shopifyagent@gmail.com" class="w-full block bg-gray-800 text-white py-2.5 rounded-lg text-center"><i class="fa-solid fa-envelope"></i> Send Email</a>
     </div>
   </div>
 </div>
@@ -282,7 +302,6 @@ body{background:var(--bg);color:#0f172a}
 <button id="waTriggerBtn" class="fixed bottom-6 right-6 z-50 rounded-full p-4 bg-[var(--green)] text-white shadow-lg hover:bg-green-700 focus-ring">
   <i class="fa-brands fa-whatsapp text-2xl"></i>
 </button>
-
 <script>
 // Loading animation
 const loading = document.getElementById('loading');
@@ -299,11 +318,12 @@ const t = setInterval(()=>{
   }
 },110);
 
-// Modal
+// Modal & widgets
 const modal = document.getElementById('modal');
 const contactForm = document.getElementById('contactForm');
 const methodField = document.getElementById('methodField');
 const waPopup = document.getElementById('whatsappPopup');
+
 document.getElementById('waTriggerBtn').addEventListener('click', ()=> waPopup.classList.toggle('hidden'));
 document.getElementById('waCloseBtn').addEventListener('click', ()=> waPopup.classList.add('hidden'));
 document.getElementById('waOpenBtn').addEventListener('click', ()=> openForm('whatsapp'));
@@ -340,13 +360,14 @@ function handleSubmit(e){
     'Issue: ' + issue + '\n' +
     'Message: ' + message
   );
+
   if(method==='whatsapp') url='https://wa.me/2349135251130?text=' + body;
-  else if(method==='telegram') url='https://t.me/yourtelegramusername';
-  else if(method==='email') url='mailto:your-email@gmail.com?subject=Support Request&body=' + body;
+  else if(method==='telegram') url='https://t.me/JuanShopifyadvisor'; // <- TELEGRAM LINK
+  else if(method==='email') url='mailto:juan.shopifyagent@gmail.com?subject=Support Request&body=' + body;
+
   window.open(url,'_blank');
 }
 </script>
 
 </body>
 </html>
-
